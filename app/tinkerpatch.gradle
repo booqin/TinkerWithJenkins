@@ -4,7 +4,7 @@ apply plugin: 'tinkerpatch-support'
  * TODO: 请按自己的需求修改为适应自己工程的参数
  */
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "QtsCustomer-4.16.0-1123-10-46-23"
+def baseInfo = "app-1.0.0-1206-10-22-43"
 def variantName = "release"
 
 /**
@@ -40,44 +40,44 @@ tinkerpatchSupport {
     def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
     def name = "${project.name}-${variantName}"
 //
-//    baseApkFile = "${pathPrefix}/${name}.apk"
-//    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-//    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+    baseApkFile = "${pathPrefix}/${name}.apk"
+    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
 
     /**
      *  若有编译多flavors需求, 可以参照： https://github.com/TinkerPatch/tinkerpatch-flavors-sample
      *  注意: 除非你不同的flavor代码是不一样的,不然建议采用zip comment或者文件方式生成渠道信息（相关工具：walle 或者 packer-ng）
      **/
 
-    productFlavors {
-        flavor {
-            flavorName = "protect"
-            appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
-
-            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}/"
-            name = "${project.name}-${flavorName}-${variantName}"
-
-            baseApkFile = "${pathPrefix}/${name}.apk"
-            baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-            baseResourceRFile = "${pathPrefix}/${name}-R.txt"
-
-            /** 开启加固开关，上传此flavor的apk到加固网站进行加固 **/
-            protectedApp = true
-        }
-
-        flavor {
-            flavorName = "normal"
-            appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
-
-            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}/"
-            name = "${project.name}-${flavorName}-${variantName}"
-
-            baseApkFile = "${pathPrefix}/${name}.apk"
-            baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-            baseResourceRFile = "${pathPrefix}/${name}-R.txt"
-            protectedApp = false
-        }
-    }
+//    productFlavors {
+//        flavor {
+//            flavorName = "protect"
+//            appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
+//
+//            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}/"
+//            name = "${project.name}-${flavorName}-${variantName}"
+//
+//            baseApkFile = "${pathPrefix}/${name}.apk"
+//            baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+//            baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+//
+//            /** 开启加固开关，上传此flavor的apk到加固网站进行加固 **/
+//            protectedApp = true
+//        }
+//
+//        flavor {
+//            flavorName = "normal"
+//            appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
+//
+//            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}/"
+//            name = "${project.name}-${flavorName}-${variantName}"
+//
+//            baseApkFile = "${pathPrefix}/${name}.apk"
+//            baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+//            baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+//            protectedApp = false
+//        }
+//    }
 }
 
 /**
