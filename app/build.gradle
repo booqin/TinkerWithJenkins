@@ -70,13 +70,13 @@ task jenkinsRelease() {
         doLast{
             exec {
                 workingDir '../'
-                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+                commandLine "python","main.py", "$TYPE", "$source_path", "$target_path"
             }
         }
     }else if(TYPE == 'PATCH'){
         exec {
             workingDir '../'
-            commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+            commandLine "python","main.py", "$TYPE", "$source_path", "$target_path"
         }
         dependsOn 'tinkerPatchRelease'
 
@@ -84,3 +84,6 @@ task jenkinsRelease() {
         dependsOn 'assembleRelease'
     }
 }
+
+// "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+//./gradlew jenkinsRelease -P source_path=/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release -P target_path=/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk
