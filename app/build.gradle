@@ -63,3 +63,13 @@ dependencies {
 
     implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:${TINKERPATCH_VERSION}")
 }
+
+task jenkinsRelease {
+    if(TYPE == 'APK'){
+        dependsOn 'assembleRelease'
+    }else if(TYPE == 'PATCH'){
+        dependsOn 'tinkerPatchRelease'
+    }else {
+        dependsOn 'assembleRelease'
+    }
+}

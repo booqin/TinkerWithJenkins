@@ -6,7 +6,7 @@ import shutil
 
 import sys
 
-source_dir = "./app/build/bakApk/release"
+source_dir = "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release"
 target_dir = "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
 
 
@@ -51,7 +51,10 @@ def get_paths(root_source_dir, root_target_dir):
 
 
 if __name__ == '__main__':
-    sp, tp = get_paths(sys.argv[1], sys.argv[2])
+    if sys.argv[1] == 'PATCH':
+        sp, tp = get_paths(sys.argv[3], sys.argv[2])
+    else:
+        sp, tp = get_paths(sys.argv[2], sys.argv[3])
 
     for index in range(len(sp)):
         shutil.copyfile(sp[index], tp[index])
