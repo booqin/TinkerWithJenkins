@@ -64,11 +64,22 @@ dependencies {
     implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:${TINKERPATCH_VERSION}")
 }
 
-task jenkinsRelease {
+task jenkinsRelease() {
     if(TYPE == 'APK'){
         dependsOn 'assembleRelease'
+        doLast{
+            exec {
+                workingDir '../'
+                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+            }
+        }
     }else if(TYPE == 'PATCH'){
+        exec {
+            workingDir '../'
+            commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+        }
         dependsOn 'tinkerPatchRelease'
+
     }else {
         dependsOn 'assembleRelease'
     }
