@@ -65,30 +65,33 @@ dependencies {
 }
 
 task jenkinsRelease() {
-    if(TYPE == 'APK'){
+    if (TYPE == 'APK') {
         dependsOn 'assembleRelease'
-        doLast{
+        doLast {
             exec {
                 workingDir '../'
-                commandLine "python","main.py", "$TYPE", "$source_path", "${target_path}/bakApk"
+                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
 //                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
             }
         }
-    }else if(TYPE == 'PATCH'){
-        exec {
-            workingDir '../'
-            commandLine "python","main.py", "$TYPE", "$source_path", "${target_path}/bakApk"
-//            commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
-        }
-        dependsOn 'tinkerPatchRelease'
-        doLast{
+    } else if (TYPE == 'PATCH') {
+
+        doFirst {
             exec {
                 workingDir '../'
-                commandLine "python","main.py", "$TYPE", "${target_path}/patch", "$source_patch_path"
+                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
+//            commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+            }
+        }
+        dependsOn 'tinkerPatchRelease'
+        doLast {
+            exec {
+                workingDir '../'
+                commandLine "python", "main.py", "$TYPE", "${TARGET_PATH}/patch", "${SOURCE_PATCH_PATH}"
 //                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/patch", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/outputs/apk/tinkerPatch"
             }
         }
-    }else {
+    } else {
         dependsOn 'assembleRelease'
     }
 }
