@@ -66,14 +66,14 @@ dependencies {
 
 task jenkinsRelease() {
     if (TYPE == 'APK') {
-//        dependsOn 'assembleRelease'
-//        doLast {
-//            exec {
-//                workingDir '../'
-//                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
-////                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
-//            }
-//        }
+        dependsOn 'assembleRelease'
+        doLast {
+            exec {
+                workingDir '../'
+                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
+//                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+            }
+        }
     } else if (TYPE == 'PATCH') {
 
         doFirst {

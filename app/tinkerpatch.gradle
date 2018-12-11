@@ -5,7 +5,7 @@ apply plugin: 'tinkerpatch-support'
  */
 def bakPath = file("${buildDir}/bakApk/" + (String.valueOf(PRODUCE_ENV) == '''"PRODUCE"'''?"release":""))
 
-def baseInfo = "app-1.0.0-1211-14-11-18"
+def baseInfo = BASE_INFO
 def variantName = "release"
 
 /**
