@@ -70,20 +70,22 @@ task jenkinsRelease() {
         doLast{
             exec {
                 workingDir '../'
-//                commandLine "python","main.py", "$TYPE", "$source_path", "$target_path"
-                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+                commandLine "python","main.py", "$TYPE", "$source_path", "${target_path}/bakApk"
+//                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
             }
         }
     }else if(TYPE == 'PATCH'){
         exec {
             workingDir '../'
-            commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+            commandLine "python","main.py", "$TYPE", "$source_path", "${target_path}/bakApk"
+//            commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
         }
         dependsOn 'tinkerPatchRelease'
         doLast{
             exec {
                 workingDir '../'
-                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/patch", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/outputs/apk/tinkerPatch"
+                commandLine "python","main.py", "$TYPE", "${target_path}/patch", "$source_patch_path"
+//                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/patch", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/outputs/apk/tinkerPatch"
             }
         }
     }else {
