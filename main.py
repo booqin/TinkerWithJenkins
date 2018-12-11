@@ -57,7 +57,8 @@ if __name__ == '__main__':
         sp, tp = get_paths(sys.argv[2], sys.argv[3])
     #
     # sp, tp = get_paths(sys.argv[1], sys.argv[2])
-
+    print "Python bbbbb"
     for index in range(len(sp)):
         shutil.copyfile(sp[index], tp[index])
+    print "Python eeeee"
 
