@@ -5,7 +5,7 @@ apply plugin: 'tinkerpatch-support'
  */
 def bakPath = file("${buildDir}/bakApk/" + (String.valueOf(PRODUCE_ENV) == '''"PRODUCE"'''?"release":""))
 
-def baseInfo = BASE_INFO
+def baseInfo = "app-1.0.0-1211-14-11-18"
 def variantName = "release"
 
 /**
@@ -45,6 +45,7 @@ tinkerpatchSupport {
     baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
     baseResourceRFile = "${pathPrefix}/${name}-R.txt"
 
+    backupFileNameFormat = "${appName}-${buildTime}"
 
     /**
      *  若有编译多flavors需求, 可以参照： https://github.com/TinkerPatch/tinkerpatch-flavors-sample
