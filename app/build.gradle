@@ -70,7 +70,7 @@ task jenkinsRelease() {
         doLast {
             exec {
                 workingDir '../'
-                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
+                commandLine "python", "main.py", "${TYPE}", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
 //                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
             }
         }
@@ -79,7 +79,7 @@ task jenkinsRelease() {
         doFirst {
             exec {
                 workingDir '../'
-                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
+                commandLine "python", "main.py", "${TYPE}", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
 //            commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
             }
         }
@@ -87,7 +87,7 @@ task jenkinsRelease() {
         doLast {
             exec {
                 workingDir '../'
-                commandLine "python", "main.py", "$TYPE", "${TARGET_PATH}/patch", "${SOURCE_PATCH_PATH}"
+                commandLine "python", "main.py", "${TYPE}", "${TARGET_PATH}/patch", "${SOURCE_PATCH_PATH}"
 //                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/patch", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/outputs/apk/tinkerPatch"
             }
         }
