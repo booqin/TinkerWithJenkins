@@ -83,10 +83,7 @@ task jenkinsRelease() {
 //        commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
             }
         }
-        println("tinkerPatchRelease bbbbbbb")
-
         dependsOn 'tinkerPatchRelease'
-        println("tinkerPatchRelease eeeeeeee")
         doLast {
             exec {
                 workingDir '../'
