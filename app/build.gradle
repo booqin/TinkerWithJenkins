@@ -63,39 +63,3 @@ dependencies {
 
     implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:${TINKERPATCH_VERSION}")
 }
-
-task jenkinsRelease() {
-    if (TYPE == 'APK') {
-        dependsOn 'assembleRelease'
-        doLast {
-            exec {
-                workingDir '../'
-                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
-//                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
-            }
-        }
-    } else if (TYPE == 'PATCH') {
-
-        if(rootProject.hasProperty('SOURCE_PATH')){
-            exec {
-                workingDir '../'
-                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
-//        commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
-            }
-        }
-        dependsOn 'tinkerPatchRelease'
-        doLast {
-            exec {
-                workingDir '../'
-                commandLine "python", "main.py", "${TYPE}", "${TARGET_PATH}/patch", "${SOURCE_PATCH_PATH}"
-//                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/patch", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/outputs/apk/tinkerPatch"
-            }
-        }
-    } else {
-        dependsOn 'assembleRelease'
-    }
-}
-
-
-// "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
-//./gradlew jenkinsRelease -P source_path=/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release -P target_path=/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk
