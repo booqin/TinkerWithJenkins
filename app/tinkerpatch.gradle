@@ -128,8 +128,7 @@ tinkerPatch {
 
 task jenkinsRelease() {
     if (TYPE == 'APK') {
-        dependsOn 'assembleProtectReleaseChannels'
-        dependsOn 'packageProtectApk'
+        dependsOn 'assembleRelease'
         doLast {
             exec {
                 workingDir '../'
@@ -138,18 +137,48 @@ task jenkinsRelease() {
         }
     } else if (TYPE == 'PATCH') {
 
+        if(rootProject.hasProperty('SOURCE_PATH')){
+            exec {
+                workingDir '../'
+                commandLine "python", "main.py", "${TARGET_PATH}/bakApk", "${SOURCE_PATH}"
+            }
+        }
+        dependsOn 'tinkerPatchRelease'
+    } else {
+        dependsOn 'assembleRelease'
+    }
+}
+//task jenkinsRelease() {
+//    if (TYPE == 'APK') {
+//        dependsOn 'assembleRelease'
+//        doLast {
+//            exec {
+//                workingDir '../'
+//                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
+////                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+//            }
+//        }
+//    } else if (TYPE == 'PATCH') {
+//
 //        if(rootProject.hasProperty('SOURCE_PATH')){
 //            exec {
 //                workingDir '../'
-//                commandLine "python", "main.py", "${TARGET_PATH}/bakApk", "${SOURCE_PATH}"
+//                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
+////        commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
 //            }
 //        }
-        dependsOn 'tinkerPatchProtectRelease'
-    } else {
-        dependsOn 'assembleProtectReleaseChannels'
-        dependsOn 'packageProtectApk'    }
-}
-
+//        dependsOn 'tinkerPatchRelease'
+//        doLast {
+//            exec {
+//                workingDir '../'
+//                commandLine "python", "main.py", "${TYPE}", "${TARGET_PATH}/patch", "${SOURCE_PATCH_PATH}"
+////                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/patch", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/outputs/apk/tinkerPatch"
+//            }
+//        }
+//    } else {
+//        dependsOn 'assembleRelease'
+//    }
+//}
 
 // "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
 //./gradlew jenkinsRelease -P source_path=/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release -P target_path=/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk
