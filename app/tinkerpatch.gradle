@@ -127,7 +127,7 @@ tinkerPatch {
 
 
 task jenkinsRelease() {
-    if (TYPE == 'APK' && rootProject.ext.tinkerEnable) {
+    if (TYPE == 'APK') {
         dependsOn 'assembleProtectReleaseChannels'
         dependsOn 'packageProtectApk'
         doLast {
@@ -136,7 +136,7 @@ task jenkinsRelease() {
                 commandLine "python", "main.py", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
             }
         }
-    } else if (TYPE == 'PATCH' && rootProject.ext.tinkerEnable) {
+    } else if (TYPE == 'PATCH') {
 
 //        if(rootProject.hasProperty('SOURCE_PATH')){
 //            exec {
