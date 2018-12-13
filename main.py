@@ -50,13 +50,23 @@ def get_paths(root_source_dir, root_target_dir):
     return source_paths, target_paths
 
 
+def dfs_showdir(path, depth):
+    if depth == 0:
+        print("root:[" + path + "]")
+
+    for item in os.listdir(path):
+        if '.git' not in item:
+            print("|      " * depth + "+--" + item)
+
+            newitem = path +'/'+ item
+            if os.path.isdir(newitem):
+                dfs_showdir(newitem, depth +1)
+
+
 if __name__ == '__main__':
-    if sys.argv[1] == 'PATCH':
-        sp, tp = get_paths(sys.argv[3], sys.argv[2])
-    else:
-        sp, tp = get_paths(sys.argv[2], sys.argv[3])
+    sp, tp = get_paths(sys.argv[1], sys.argv[2])
     #
-    # sp, tp = get_paths(sys.argv[1], sys.argv[2])
     for index in range(len(sp)):
         shutil.copyfile(sp[index], tp[index])
 
+    dfs_showdir(sys.argv[2], 0)

@@ -3,7 +3,7 @@ apply plugin: 'tinkerpatch-support'
 /**
  * TODO: 请按自己的需求修改为适应自己工程的参数
  */
-def bakPath = file("${buildDir}/bakApk/" + (String.valueOf(PRODUCE_ENV) == '''"PRODUCE"'''?"release":""))
+def bakPath = file("${buildDir}/bakApk/")
 
 def baseInfo = BASE_INFO
 def variantName = "release"
@@ -41,44 +41,44 @@ tinkerpatchSupport {
     def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
     def name = "${project.name}-${variantName}"
 //
-    baseApkFile = "${pathPrefix}/${name}.apk"
-    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+//    baseApkFile = "${pathPrefix}/${name}.apk"
+//    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+//    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
 
     /**
      *  若有编译多flavors需求, 可以参照： https://github.com/TinkerPatch/tinkerpatch-flavors-sample
      *  注意: 除非你不同的flavor代码是不一样的,不然建议采用zip comment或者文件方式生成渠道信息（相关工具：walle 或者 packer-ng）
      **/
 
-//    productFlavors {
-//        flavor {
-//            flavorName = "protect"
-//            appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
-//
-//            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}/"
-//            name = "${project.name}-${flavorName}-${variantName}"
-//
-//            baseApkFile = "${pathPrefix}/${name}.apk"
-//            baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-//            baseResourceRFile = "${pathPrefix}/${name}-R.txt"
-//
-//            /** 开启加固开关，上传此flavor的apk到加固网站进行加固 **/
-//            protectedApp = true
-//        }
-//
-//        flavor {
-//            flavorName = "normal"
-//            appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
-//
-//            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}/"
-//            name = "${project.name}-${flavorName}-${variantName}"
-//
-//            baseApkFile = "${pathPrefix}/${name}.apk"
-//            baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-//            baseResourceRFile = "${pathPrefix}/${name}-R.txt"
-//            protectedApp = false
-//        }
-//    }
+    productFlavors {
+        flavor {
+            flavorName = "protect"
+            appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
+
+            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}"
+            name = "${project.name}-${flavorName}-${variantName}"
+
+            baseApkFile = "${pathPrefix}/${name}.apk"
+            baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+            baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+
+            /** 开启加固开关，上传此flavor的apk到加固网站进行加固 **/
+            protectedApp = true
+        }
+
+        flavor {
+            flavorName = "normal"
+            appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
+
+            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}"
+            name = "${project.name}-${flavorName}-${variantName}"
+
+            baseApkFile = "${pathPrefix}/${name}.apk"
+            baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+            baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+            protectedApp = false
+        }
+    }
 }
 
 /**
@@ -127,35 +127,27 @@ tinkerPatch {
 
 
 task jenkinsRelease() {
-    if (TYPE == 'APK') {
-        dependsOn 'assembleRelease'
+    if (TYPE == 'APK' && rootProject.ext.tinkerEnable) {
+        dependsOn 'assembleProtectReleaseChannels'
+        dependsOn 'packageProtectApk'
         doLast {
             exec {
                 workingDir '../'
-                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
-//                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
+                commandLine "python", "main.py", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
             }
         }
-    } else if (TYPE == 'PATCH') {
+    } else if (TYPE == 'PATCH' && rootProject.ext.tinkerEnable) {
 
-        if(rootProject.hasProperty('SOURCE_PATH')){
-            exec {
-                workingDir '../'
-                commandLine "python", "main.py", "$TYPE", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
-//        commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/bakApk/release", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/bakApk"
-            }
-        }
-        dependsOn 'tinkerPatchRelease'
-//        doLast {
+//        if(rootProject.hasProperty('SOURCE_PATH')){
 //            exec {
 //                workingDir '../'
-//                commandLine "python", "main.py", "${TYPE}", "${TARGET_PATH}/patch", "${SOURCE_PATCH_PATH}"
-////                commandLine "python","main.py", "$TYPE", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/patch", "/Users/vito/AndroidStudioProjects/TinkerWithJenkins/app/build/outputs/apk/tinkerPatch"
+//                commandLine "python", "main.py", "${TARGET_PATH}/bakApk", "${SOURCE_PATH}"
 //            }
 //        }
+        dependsOn 'tinkerPatchProtectRelease'
     } else {
-        dependsOn 'assembleRelease'
-    }
+        dependsOn 'assembleProtectReleaseChannels'
+        dependsOn 'packageProtectApk'    }
 }
 
 
