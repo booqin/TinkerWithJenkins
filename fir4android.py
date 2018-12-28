@@ -50,33 +50,40 @@ def get_apk(path):
 def init_apk_info(apk, env):
     global NIKE_NAME, VERSION, BUILD, BUNDLE_ID
 
+    # cmd = "/Users/vito/Library/Android/sdk/build-tools/28.0.3/aapt dump badging %s | grep application-icon-320" % apk
     cmd = "/android/aapt dump badging %s | grep application-icon-320" % apk
     output = os.popen(cmd).read()
     icon_path = output[22:len(output) - 2]
+    print(icon_path)
     icon_data = zipfile.ZipFile(apk).read(icon_path)
     if not os.path.exists(ICON_PATH):
         os.makedirs(ICON_PATH)
     with open(ICON_NAME, 'w+b') as saveIconFile:
         saveIconFile.write(icon_data)
 
+    # cmd = "/Users/vito/Library/Android/sdk/build-tools/28.0.3/aapt dump badging %s | grep application-label-zh-CN" % apk
     cmd = "/android/aapt dump badging %s | grep application-label-zh-CN" % apk
 
     name_res = os.popen(cmd).read()
 
-    NIKE_NAME = name_res[24:len(name_res) - 2]
+    NIKE_NAME = name_res[25:len(name_res) - 2]
 
+    # cmd = "/Users/vito/Library/Android/sdk/build-tools/28.0.3/aapt dump badging %s | grep package:" % apk
     cmd = "/android/aapt dump badging %s | grep package:" % apk
 
     info = os.popen(cmd).read()
-    infos = info[9:len(info) - 2].split(' ')
+    infos = info[9:len(info)-1].split(' ')
     print(infos)
     results = []
     for i in range(len(infos)):
         results.append(infos[i].split('=')[1])
-    VERSION = results[2] + env
-    BUILD = results[1]
-    BUNDLE_ID = results[0]
+    VERSION = get_str(results[2]) + '-' + env
+    BUILD = get_str(results[1])
+    BUNDLE_ID = get_str(results[0])
 
+
+def get_str(str):
+    return str[1:len(str)-1]
 
 def upload_fir(apk):
     post_data = {'type': 'android', 'bundle_id': BUNDLE_ID,
