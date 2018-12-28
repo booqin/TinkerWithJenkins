@@ -48,7 +48,7 @@ def get_apk(path):
 
 
 def init_apk_info(apk, env):
-    global NIKE_NAME, VERSION, BUILD, BUNDLE_ID
+    global NIKE_NAME, VERSION, BUILD, BUNDLE_ID, CHANGELOG
 
     # cmd = "/Users/vito/Library/Android/sdk/build-tools/28.0.3/aapt dump badging %s | grep application-icon-320" % apk
     cmd = "/android/aapt dump badging %s | grep application-icon-320" % apk
@@ -80,6 +80,9 @@ def init_apk_info(apk, env):
     VERSION = get_str(results[2]) + '-' + env
     BUILD = get_str(results[1])
     BUNDLE_ID = get_str(results[0])
+
+    cmd = "git log -3 --pretty=format:'%s' --abbrev-commit"
+    CHANGELOG = os.popen(cmd).read()
 
 
 def get_str(str):
