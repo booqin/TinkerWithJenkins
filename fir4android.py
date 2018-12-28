@@ -2,6 +2,7 @@
 # Create by BoQin on 2018/12/06
 import json
 import os
+import zipfile
 
 import requests
 import sys
@@ -10,16 +11,16 @@ PATH = ""
 
 URL = "http://api.fir.im/apps"
 
+ICON_PATH = './build/temp/'
+ICON_NAME = ICON_PATH + 'icon.png'
+
 TOKEN = "3855da5aeac872749eba641d23c3f8c1"
 
 BUNDLE_ID = "com.qts.unknown"
 
 HEADERS = {"Content-Type": "application/json"}
 
-ICON = './ic_launcher_round.png'
-
-post_data = {'type': 'android', 'bundle_id': BUNDLE_ID,
-             'api_token': TOKEN}
+APK = './QtsCustomer-1.1.1-normal-release.apk'
 
 NIKE_NAME = '青团社兼职'
 
@@ -46,12 +47,46 @@ def get_apk(path):
                 return os.path.join(parent, filename)
 
 
+def init_apk_info(apk, env):
+    global NIKE_NAME, VERSION, BUILD, BUNDLE_ID
+
+    cmd = "/android/aapt dump badging %s | grep application-icon-320" % apk
+    output = os.popen(cmd).read()
+    icon_path = output[22:len(output) - 2]
+    icon_data = zipfile.ZipFile(apk).read(icon_path)
+    if not os.path.exists(ICON_PATH):
+        os.makedirs(ICON_PATH)
+    with open(ICON_NAME, 'w+b') as saveIconFile:
+        saveIconFile.write(icon_data)
+
+    cmd = "/android/aapt dump badging %s | grep application-label-zh-CN" % apk
+
+    name_res = os.popen(cmd).read()
+
+    NIKE_NAME = name_res[24:len(name_res) - 2]
+
+    cmd = "/android/aapt dump badging %s | grep package:" % apk
+
+    info = os.popen(cmd).read()
+    infos = info[9:len(info) - 2].split(' ')
+    print(infos)
+    results = []
+    for i in range(len(infos)):
+        results.append(infos[i].split('=')[1])
+    VERSION = results[2] + env
+    BUILD = results[1]
+    BUNDLE_ID = results[0]
+
+
 def upload_fir(apk):
+    post_data = {'type': 'android', 'bundle_id': BUNDLE_ID,
+                 'api_token': TOKEN}
     r = requests.post(URL, data=json.dumps(post_data), headers=HEADERS)
     if r.status_code == 201:
         res = json.loads(r.text)
         print(json.loads(r.text)['cert']['icon'])
-        upload_file(res['cert']['icon']['upload_url'], res['cert']['icon']['key'], res['cert']['icon']['token'], ICON)
+        upload_file(res['cert']['icon']['upload_url'], res['cert']['icon']['key'], res['cert']['icon']['token'],
+                    ICON_NAME)
         upload_file(res['cert']['binary']['upload_url'], res['cert']['binary']['key'], res['cert']['binary']['token'],
                     apk)
 
@@ -59,7 +94,6 @@ def upload_fir(apk):
 def upload_file(url, key, token, file):
     param_data = {'key': key, 'token': token, 'x:name': NIKE_NAME, 'x:version': VERSION, 'x:build': BUILD,
                   'x:changelog': CHANGELOG}
-    print(param_data)
     files = {'file': open(file, 'rb')}
     r = requests.post(url, data=param_data, files=files)
     print(r.status_code)
@@ -68,11 +102,7 @@ def upload_file(url, key, token, file):
 
 if __name__ == '__main__':
     """
-    {NIKE_NAME, VERSION, BUILD, PACKAGE, PATH}
+    {PATH, ENV}
     """
-    NIKE_NAME = sys.argv[1]
-    VERSION = sys.argv[2]
-    BUILD = sys.argv[3]
-    BUNDLE_ID = sys.argv[4]
-
-    upload_fir(get_apk(sys.argv[5]))
+    init_apk_info(sys.argv[1], sys.argv[2])
+    upload_fir(get_apk(sys.argv[1]))
