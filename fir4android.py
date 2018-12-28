@@ -3,6 +3,7 @@
 import json
 import os
 import zipfile
+import locale
 
 import requests
 import sys
@@ -114,6 +115,7 @@ if __name__ == '__main__':
     """
     {PATH, ENV}
     """
+    locale.setlocale(locale.LC_ALL, 'zh_CN.UTF-8')
     apk = get_apk(sys.argv[1])
     init_apk_info(apk, sys.argv[2])
     upload_fir(apk)
