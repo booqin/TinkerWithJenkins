@@ -12,7 +12,7 @@ URL = "http://api.fir.im/apps"
 
 TOKEN = "3855da5aeac872749eba641d23c3f8c1"
 
-BUNDLE_ID = "com.qts.customer"
+BUNDLE_ID = "com.qts.unknown"
 
 HEADERS = {"Content-Type": "application/json"}
 
@@ -69,7 +69,12 @@ def upload_file(url, key, token, file):
 
 
 if __name__ == '__main__':
-    # NIKE_NAME = sys.argv[1]
-    # VERSION = sys.argv[2]
-    # BUILD = sys.argv[3]
-    upload_fir(get_apk('./'))
+    """
+    {NIKE_NAME, VERSION, BUILD, PACKAGE, PATH}
+    """
+    NIKE_NAME = sys.argv[1]
+    VERSION = sys.argv[2]
+    BUILD = sys.argv[3]
+    BUNDLE_ID = sys.argv[4]
+
+    upload_fir(get_apk(sys.argv[5]))
