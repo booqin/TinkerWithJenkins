@@ -16,9 +16,7 @@ BUNDLE_ID = "com.qts.unknown"
 
 HEADERS = {"Content-Type": "application/json"}
 
-ICON = './timg.jpeg'
-
-APK = './QtsCustomer-1.1.1-normal-release.apk'
+ICON = './ic_launcher_round.png'
 
 post_data = {'type': 'android', 'bundle_id': BUNDLE_ID,
              'api_token': TOKEN}
