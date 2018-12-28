@@ -104,5 +104,6 @@ if __name__ == '__main__':
     """
     {PATH, ENV}
     """
-    init_apk_info(sys.argv[1], sys.argv[2])
-    upload_fir(get_apk(sys.argv[1]))
+    apk = get_apk(sys.argv[1])
+    init_apk_info(apk, sys.argv[2])
+    upload_fir(apk)
