@@ -124,15 +124,16 @@ tinkerPatch {
     }
 }
 
-
-
 task jenkinsRelease() {
     if (TYPE == 'APK') {
         dependsOn 'assembleRelease'
         doLast {
             exec {
                 workingDir '../'
-                commandLine "python", "main.py", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
+//                commandLine "python", "main.py", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
+                commandLine "python", "fir4android.py",
+                        "TinkerTest", rootProject.ext.versionName + 'TEST',
+                        rootProject.ext.versionCode, rootProject.ext.applicationId, './app/build/outputs'
             }
         }
     } else if (TYPE == 'PATCH') {
