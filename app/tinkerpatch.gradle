@@ -132,7 +132,7 @@ task jenkinsRelease() {
                 workingDir '../'
 //                commandLine "python", "main.py", "${SOURCE_PATH}", "${TARGET_PATH}/bakApk"
                 commandLine "python3", "fir4android.py",
-                        './app/build/outputs',"dev"
+                        './app/build/outputs',rootProject.ext.PRODUCE_ENV
             }
         }
     } else if (TYPE == 'PATCH') {
