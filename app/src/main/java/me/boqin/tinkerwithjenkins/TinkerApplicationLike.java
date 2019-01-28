@@ -69,20 +69,20 @@ public class TinkerApplicationLike extends DefaultApplicationLike {
     }
 
     private void initTinker() {
-        if (BuildConfig.TINKER_ENABLE) {
-            //开始检查是否有补丁，这里配置的是每隔访问3小时服务器是否有更新。
-            TinkerPatch.init(this)
-                    .reflectPatchLibrary()
-                    .setPatchRollbackOnScreenOff(true)
-                    .setPatchRestartOnSrceenOff(true)
-                    .setFetchPatchIntervalByHours(3);
-
-            // 获取当前的补丁版本
-            Log.d(TAG, "current patch version is " + TinkerPatch.with().getPatchVersion());
-
-            //每隔3个小时去访问后台时候有更新,通过handler实现轮训的效果
-            TinkerPatch.with().fetchPatchUpdateAndPollWithInterval();
-        }
+//        if (BuildConfig.TINKER_ENABLE) {
+//            //开始检查是否有补丁，这里配置的是每隔访问3小时服务器是否有更新。
+//            TinkerPatch.init(this)
+//                    .reflectPatchLibrary()
+//                    .setPatchRollbackOnScreenOff(true)
+//                    .setPatchRestartOnSrceenOff(true)
+//                    .setFetchPatchIntervalByHours(3);
+//
+//            // 获取当前的补丁版本
+//            Log.d(TAG, "current patch version is " + TinkerPatch.with().getPatchVersion());
+//
+//            //每隔3个小时去访问后台时候有更新,通过handler实现轮训的效果
+//            TinkerPatch.with().fetchPatchUpdateAndPollWithInterval();
+//        }
     }
 
     /**
