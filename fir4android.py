@@ -7,6 +7,8 @@ import locale
 
 import requests
 import sys
+import time
+
 
 PATH = ""
 
@@ -111,6 +113,9 @@ def upload_file(url, key, token, file):
     print(r.text)
 
 
+def make_empty_dir(_dir):
+    if not os.path.exists(_dir):
+        os.makedirs(_dir)
 
 
 def get_zip_file(input_path, result):
@@ -136,11 +141,16 @@ def zip_file_path(input_path, output_path):
     :param output_name: 压缩包名称
     :return:
     """
-    f = zipfile.ZipFile(output_path + '/' + 'bakApk.zip', 'w', zipfile.ZIP_DEFLATED)
+    out_p = output_path + str(int(time.time()))
+    print("============================================")
+    print(output_path)
+    print("============================================")
+    make_empty_dir(out_p)
+    f = zipfile.ZipFile(out_p + '/' + 'bakApk.zip', 'w', zipfile.ZIP_DEFLATED)
     filelists = []
     get_zip_file(input_path, filelists)
     for file in filelists:
-        f.write(file, "bakApk"+file[len(input_path):])
+        f.write(file, "bakApk/"+(""+file[len(input_path):]).split("/")[-2]+"/"+(""+file[len(input_path):]).split("/")[-1])
     # 调用了close方法才会保证完成压缩
     f.close()
 
