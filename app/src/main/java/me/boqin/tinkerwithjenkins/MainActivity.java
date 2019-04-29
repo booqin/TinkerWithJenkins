@@ -1,30 +1,23 @@
 package me.boqin.tinkerwithjenkins;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.FrameLayout;
-import io.flutter.facade.Flutter;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-        View flutterView = Flutter.createView(
-                MainActivity.this,
-                getLifecycle(),
-                "route1"
-        );
-        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(600, 800);
-        layout.leftMargin = 100;
-        layout.topMargin = 200;
-        setContentView(flutterView, layout);
+        setContentView(R.layout.activity_main);
+//        View flutterView = Flutter.createView(
+//                MainActivity.this,
+//                getLifecycle(),
+//                "route1"
+//        );
+//        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(600, 800);
+//        layout.leftMargin = 100;
+//        layout.topMargin = 200;
+//        setContentView(flutterView, layout);
 
 //        findViewById(R.id.goto_qts).setOnClickListener(new View.OnClickListener() {
 //            @Override

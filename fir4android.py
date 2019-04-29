@@ -111,10 +111,45 @@ def upload_file(url, key, token, file):
     print(r.text)
 
 
+
+
+def get_zip_file(input_path, result):
+    """
+    对目录进行深度优先遍历
+    :param input_path:
+    :param result:
+    :return:
+    """
+    files = os.listdir(input_path)
+    for file in files:
+        if os.path.isdir(input_path + '/' + file):
+            get_zip_file(input_path + '/' + file, result)
+        else:
+            result.append(input_path + '/' + file)
+
+
+def zip_file_path(input_path, output_path):
+    """
+    压缩文件
+    :param input_path: 压缩的文件夹路径
+    :param output_path: 解压（输出）的路径
+    :param output_name: 压缩包名称
+    :return:
+    """
+    f = zipfile.ZipFile(output_path + '/' + 'bakApk.zip', 'w', zipfile.ZIP_DEFLATED)
+    filelists = []
+    get_zip_file(input_path, filelists)
+    for file in filelists:
+        f.write(file, "bakApk"+file[len(input_path):])
+    # 调用了close方法才会保证完成压缩
+    f.close()
+
+
 if __name__ == '__main__':
     """
-    {PATH, ENV}
+    {PATH, ENV, SOURCE_PATH, PTARGET_PATH}
     """
+    zip_file_path(sys.argv[3] + "bakApk", sys.argv[4])
     locale.setlocale(locale.LC_ALL, 'zh_CN.UTF-8')
     apk = get_apk(sys.argv[1])
     init_apk_info(apk, sys.argv[2])

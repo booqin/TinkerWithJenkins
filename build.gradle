@@ -34,7 +34,7 @@ ext {
     versionCode = 1
     versionName = "1.0.0"
 
-    tinkerEnable = (String.valueOf(rootProject.properties["PRODUCE_ENV"]) != '''"PRODUCE"''')?rootProject.ext.TINKER_ENABLE.toBoolean():true
+    tinkerEnable = true
 
 
 }
