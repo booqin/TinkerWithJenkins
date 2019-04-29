@@ -143,7 +143,7 @@ def zip_file_path(input_path, output_path):
     """
     out_p = output_path + str(int(time.time()))
     print("============================================")
-    print(output_path)
+    print(out_p)
     print("============================================")
     make_empty_dir(out_p)
     f = zipfile.ZipFile(out_p + '/' + 'bakApk.zip', 'w', zipfile.ZIP_DEFLATED)
