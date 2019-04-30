@@ -6,6 +6,9 @@ import time
 
 import zipfile
 
+import sys
+
+
 if __name__ == '__main__':
     # if sys.argv[1] == 'PATCH':
     #     sp, tp = get_paths(sys.argv[3], sys.argv[2])
