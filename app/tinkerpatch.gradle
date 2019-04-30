@@ -141,7 +141,7 @@ task jenkinsRelease() {
             exec {
                 workingDir '../'
 //                commandLine "python", "main.py", "${TARGET_PATH}/bakApk", "${SOURCE_PATH}"
-                commandLine "python", "patch_fetch.py", "${TARGET_PATH}", "${SOURCE_PATH}+/bakApk/+${BASE_ID}"
+                commandLine "python", "patch_fetch.py", "${TARGET_PATH}/${BASE_ID}", "${SOURCE_PATH}/bakApk"
             }
         }
         dependsOn 'tinkerPatchRelease'
