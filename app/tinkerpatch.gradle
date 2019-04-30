@@ -5,7 +5,7 @@ apply plugin: 'tinkerpatch-support'
  */
 def bakPath = file("${buildDir}/bakApk/")
 
-def baseInfo = BASE_INFO
+//def baseInfo = BASE_ID
 def variantName = "release"
 
 /**
@@ -38,7 +38,7 @@ tinkerpatchSupport {
     /** 注意: 若发布新的全量包, appVersion一定要更新 **/
     appVersion = rootProject.ext.versionName
 
-    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
+    def pathPrefix = "${bakPath}/${variantName}"
     def name = "${project.name}-${variantName}"
 //
 //    baseApkFile = "${pathPrefix}/${name}.apk"
@@ -55,7 +55,7 @@ tinkerpatchSupport {
             flavorName = "protect"
             appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
 
-            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}"
+            pathPrefix = "${bakPath}/${flavorName}-${variantName}"
             name = "${project.name}-${flavorName}-${variantName}"
 
             baseApkFile = "${pathPrefix}/${name}.apk"
@@ -70,7 +70,7 @@ tinkerpatchSupport {
             flavorName = "normal"
             appVersion = "${tinkerpatchSupport.appVersion}_${flavorName}"
 
-            pathPrefix = "${bakPath}/${baseInfo}/${flavorName}-${variantName}"
+            pathPrefix = "${bakPath}/${flavorName}-${variantName}"
             name = "${project.name}-${flavorName}-${variantName}"
 
             baseApkFile = "${pathPrefix}/${name}.apk"
@@ -140,7 +140,8 @@ task jenkinsRelease() {
         if(rootProject.hasProperty('SOURCE_PATH')){
             exec {
                 workingDir '../'
-                commandLine "python", "main.py", "${TARGET_PATH}/bakApk", "${SOURCE_PATH}"
+//                commandLine "python", "main.py", "${TARGET_PATH}/bakApk", "${SOURCE_PATH}"
+                commandLine "python", "patch_fetch.py", "${TARGET_PATH}", "${SOURCE_PATH}+${BASE_ID}"
             }
         }
         dependsOn 'tinkerPatchRelease'
