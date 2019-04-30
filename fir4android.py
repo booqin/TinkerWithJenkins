@@ -141,9 +141,11 @@ def zip_file_path(input_path, output_path):
     :param output_name: 压缩包名称
     :return:
     """
-    out_p = output_path + str(int(time.time()))
+    timeId = str(int(time.time()))
+    out_p = output_path + '/' + timeId
     print("============================================")
     print(out_p)
+    print('baseId:'+timeId)
     print("============================================")
     make_empty_dir(out_p)
     f = zipfile.ZipFile(out_p + '/' + 'bakApk.zip', 'w', zipfile.ZIP_DEFLATED)
@@ -153,7 +155,6 @@ def zip_file_path(input_path, output_path):
         f.write(file, "bakApk/"+(""+file[len(input_path):]).split("/")[-2]+"/"+(""+file[len(input_path):]).split("/")[-1])
     # 调用了close方法才会保证完成压缩
     f.close()
-
 
 if __name__ == '__main__':
     """
